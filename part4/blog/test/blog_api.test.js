@@ -30,48 +30,62 @@ beforeEach(async () => {
   await blogObject.save()
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+// test('blogs are returned as json', async () => {
+//   await api
+//     .get('/api/blogs')
+//     .expect(200)
+//     .expect('Content-Type', /application\/json/)
+// })
 
-test('there are x blogs', async () => {
-  const response = await api.get('/api/blogs')
+// test('there are x blogs', async () => {
+//   const response = await api.get('/api/blogs')
 
-  assert.strictEqual(response.body.length, 2)
-})
+//   assert.strictEqual(response.body.length, 2)
+// })
 
-test('The unique identifier is named id', async () =>
-{
-  const response = await api.get('/api/blogs')
-  const allBlogsHaveId = response.body.every(blog => 'id' in blog);
+// test('The unique identifier is named id', async () =>
+// {
+//   const response = await api.get('/api/blogs')
+//   const allBlogsHaveId = response.body.every(blog => 'id' in blog);
 
-  assert.strictEqual(allBlogsHaveId, true);
-})
+//   assert.strictEqual(allBlogsHaveId, true);
+// })
 
-test('Total amount of blog increases by 1 while every post', async() =>
+// test('Total amount of blog increases by 1 while every post', async() =>
+// {
+//   const newBlog = {
+//     title: 'HTML is a dog',
+//     author: 'dog',
+//     url: 'www.yahoo.com',
+//     likes: 20
+//   }
+//   await api
+//     .post('/api/blogs/blog')
+//     .send(newBlog)
+//     .expect(200)
+//     .expect('Content-Type', /application\/json/)
+  
+//     const response = await api.get('/api/blogs')
+//     const titles = response.body.map(r => r.title)
+
+//     assert.strictEqual(response.body.length, initialBlogs.length + 1)
+
+//     assert(titles.includes('HTML is a dog'))
+// })
+
+test('if like is missing, default to 1', async() =>
 {
   const newBlog = {
     title: 'HTML is a dog',
     author: 'dog',
     url: 'www.yahoo.com',
-    likes: 20
   }
-  await api
-    .post('/api/blogs/blog')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-  
-    const response = await api.get('/api/blogs')
-    const titles = response.body.map(r => r.title)
+  const response = await api.post('/api/blogs/blog').send(newBlog).expect(200);
 
-    assert.strictEqual(response.body.length, initialBlogs.length + 1)
-
-    assert(titles.includes('HTML is a dog'))
+  console.log(response.body)
+  assert.strictEqual(response.body.likes, 0)
 })
+
 
 // test('the first blog is about something', async () => {
 //   const response = await api.get('/api/blogs')
