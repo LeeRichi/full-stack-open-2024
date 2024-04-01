@@ -1,13 +1,25 @@
-POST http://localhost:3001/api/blogs
+# POST http://localhost:3001/api/blogs/blog
+# Content-Type: application/json
+
+# {
+#     "title": "rich is a dog",
+#     "author": "78",
+#     "url": "78",
+#     "likes": 78
+# }
+
+# DELETE  http://localhost:3001/api/blogs/6608673e391331305abca878
+
+# GET  http://localhost:3001/api/blogs
+
+PUT http://localhost:3001/api/blogs/660833ea391331305abca876
 Content-Type: application/json
 
 {
-    "title": "hi2",
+    "title": "rich is a dog",
     "author": "78",
     "url": "78",
     "likes": 78
 }
 
-# DELETE  http://localhost:3001/api/blogs/66082568b15e085e17dea72c
 
-# GET  http://localhost:3001/api/blogs
