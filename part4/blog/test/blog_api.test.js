@@ -1,4 +1,4 @@
-const { test, after, beforeEach } = require('node:test')
+const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('assert');
 
 const Blog = require('../models/blog')
@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
+
+const helper = require('../utils/list_helper')
 
 const initialBlogs = [
   {
@@ -86,17 +88,37 @@ beforeEach(async () => {
 //   assert.strictEqual(response.body.likes, 0)
 // })
 
-test('if the title or url is missing', async() =>
+// test('if the title or url is missing', async() =>
+// {
+//   const newBlog = {
+//     author: 'dog',
+//     url: 'www.yahoo.com',
+//   }
+//   const response = await api.post('/api/blogs/blog').send(newBlog);
+
+//   assert.strictEqual(response.status, 400);
+// })
+
+
+describe('deletion of a note', () =>
 {
-  const newBlog = {
-    author: 'dog',
-    url: 'www.yahoo.com',
-  }
-  const response = await api.post('/api/blogs/blog').send(newBlog);
+  test('succeeds with status code 204 if id is valid', async () =>
+  {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
 
-  assert.strictEqual(response.status, 400);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, initialBlogs.length - 1)
+
+    const contents = blogsAtEnd.map(r => r.title)
+    assert(!contents.includes(blogToDelete.title))
+  })
 })
-
 
 // test('the first blog is about something', async () => {
 //   const response = await api.get('/api/blogs')
