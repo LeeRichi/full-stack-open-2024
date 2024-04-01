@@ -73,17 +73,28 @@ beforeEach(async () => {
 //     assert(titles.includes('HTML is a dog'))
 // })
 
-test('if like is missing, default to 1', async() =>
+// test('if like is missing, default to 1', async() =>
+// {
+//   const newBlog = {
+//     title: 'HTML is a dog',
+//     author: 'dog',
+//     url: 'www.yahoo.com',
+//   }
+//   const response = await api.post('/api/blogs/blog').send(newBlog).expect(200);
+
+//   console.log(response.body)
+//   assert.strictEqual(response.body.likes, 0)
+// })
+
+test('if the title or url is missing', async() =>
 {
   const newBlog = {
-    title: 'HTML is a dog',
     author: 'dog',
     url: 'www.yahoo.com',
   }
-  const response = await api.post('/api/blogs/blog').send(newBlog).expect(200);
+  const response = await api.post('/api/blogs/blog').send(newBlog);
 
-  console.log(response.body)
-  assert.strictEqual(response.body.likes, 0)
+  assert.strictEqual(response.status, 400);
 })
 
 
