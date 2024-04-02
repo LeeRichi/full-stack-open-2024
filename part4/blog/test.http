@@ -16,7 +16,7 @@ PUT http://localhost:3001/api/blogs/660833ea391331305abca876
 Content-Type: application/json
 
 {
-    "title": "rich is a dog",
+    "title": "rich is a dog2",
     "author": "78",
     "url": "78",
     "likes": 78

@@ -7,7 +7,8 @@ blogsRouter.get('/', (request, response) => {
   })
 })
 
-blogsRouter.get('/:id', (request, response, next) => {
+blogsRouter.get('/:id', (request, response, next) =>
+{
   Blog.findById(request.params.id)
     .then(blog => {
       if (blog) {
@@ -46,6 +47,7 @@ blogsRouter.delete('/:id', (request, response, next) => {
 
 blogsRouter.put('/:id', (request, response, next) => {
   const body = request.body
+  console.log('body in con: ' + JSON.stringify(body))
 
   const blog = {
     title: body.title,
@@ -53,6 +55,11 @@ blogsRouter.put('/:id', (request, response, next) => {
     url: body.url,
     likes: body.likes
   }
+
+  console.log('id: ' + request.params.id)
+
+  console.log('request.body:', request.body);
+  console.log('in controllerr: ' + JSON.stringify(blog))
 
   Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     .then(updatedBlog => {

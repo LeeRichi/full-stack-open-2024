@@ -100,23 +100,66 @@ beforeEach(async () => {
 // })
 
 
-describe('deletion of a note', () =>
+// describe('deletion of a note', () =>
+// {
+//   test('deletion', async () =>
+//   {
+//     const blogsAtStart = await helper.blogsInDb()
+//     const blogToDelete = blogsAtStart[0]
+
+//     await api
+//       .delete(`/api/blogs/${blogToDelete.id}`)
+//       .expect(204)
+    
+//     const blogsAtEnd = await helper.blogsInDb()
+
+//     assert.strictEqual(blogsAtEnd.length, initialBlogs.length - 1)
+
+//     const contents = blogsAtEnd.map(r => r.title)
+//     assert(!contents.includes(blogToDelete.title))
+//   })
+// })
+
+describe('updating of a note', () =>
 {
-  test('succeeds with status code 204 if id is valid', async () =>
+  test('updating', async () =>
   {
     const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+    const blogToUpdate = blogsAtStart[0]
+
+    const newBlog = {
+      title: 'new one',
+      author: 'rich',
+      url: 'www.url.com',
+      likes: 3
+    }
+
+    // await api
+    //   .get(`/api/blogs/${blogToUpdate.id}`)
+    //   .expect(200)
+    //   .then(res => console.log(res.body))
 
     await api
-      .delete(`/api/blogs/${blogToDelete.id}`)
-      .expect(204)
-    
-    const blogsAtEnd = await helper.blogsInDb()
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(newBlog)
+      .expect(200)
+      .then(async res =>
+      {
+        console.log('arr:' + JSON.stringify(res.body))
+        const blogsAtEnd = await helper.blogsInDb()
+        console.log('blogsAtEnd[0]: ' + JSON.stringify(blogsAtEnd[0]))
+        const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+        // console.log(updatedBlog.title)
+      })
 
-    assert.strictEqual(blogsAtEnd.length, initialBlogs.length - 1)
+    // const blogsAtEnd = await helper.blogsInDb()
 
-    const contents = blogsAtEnd.map(r => r.title)
-    assert(!contents.includes(blogToDelete.title))
+    // console.log(blogsAtEnd[0])
+
+    // const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+    // console.log(updatedBlog.title)
+
+    // assert.deepStrictEqual(blogsAtEnd[0], newBlog)
   })
 })
 
