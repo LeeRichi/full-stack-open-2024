@@ -11,7 +11,7 @@
 
 # DELETE  http://localhost:3001/api/blogs/6608673e391331305abca878
 
-GET  http://localhost:3001/api/blogs
+# GET  http://localhost:3001/api/blogs
 
 # PUT http://localhost:3001/api/blogs/660833ea391331305abca876
 # Content-Type: application/json
@@ -27,8 +27,17 @@ GET  http://localhost:3001/api/blogs
 # Content-Type: application/json
 
 # {
-#     "username": "rich lee",
-#     "name": "rich",
-#     "password": "78"
+#     "username": "dog dudu",
+#     "name": "dudu",
+#     "password": "password123"
 # }
 
+
+
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "dog dudu",
+    "password": "password123"
+}
