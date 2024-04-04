@@ -1,25 +1,35 @@
-# POST http://localhost:3001/api/blogs/blog
-# Content-Type: application/json
 
-# {
-#     "title": "rich is a dog",
-#     "author": "78",
-#     "url": "78",
-#     "likes": 78
-# }
-
-# DELETE  http://localhost:3001/api/blogs/6608673e391331305abca878
-
-# GET  http://localhost:3001/api/blogs
-
-PUT http://localhost:3001/api/blogs/660833ea391331305abca876
+POST http://localhost:3001/api/blogs/blog
 Content-Type: application/json
 
 {
     "title": "rich is a dog2",
     "author": "78",
     "url": "78",
-    "likes": 78
+    "likes": 78,
+    "userId": "660d57b929a3457933fa4934"
 }
 
+# DELETE  http://localhost:3001/api/blogs/6608673e391331305abca878
+
+# GET  http://localhost:3001/api/blogs
+
+# PUT http://localhost:3001/api/blogs/660833ea391331305abca876
+# Content-Type: application/json
+
+# {
+#     "title": "rich is a dog2",
+#     "author": "78",
+#     "url": "78",
+#     "likes": 78
+# }
+
+# POST http://localhost:3001/api/users/user
+# Content-Type: application/json
+
+# {
+#     "username": "rich lee",
+#     "name": "rich",
+#     "password": "78"
+# }
 
