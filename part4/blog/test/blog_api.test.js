@@ -148,8 +148,6 @@ describe('updating of a note', () =>
         console.log('arr:' + JSON.stringify(res.body))
         const blogsAtEnd = await helper.blogsInDb()
         console.log('blogsAtEnd[0]: ' + JSON.stringify(blogsAtEnd[0]))
-        const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
-        // console.log(updatedBlog.title)
       })
 
     // const blogsAtEnd = await helper.blogsInDb()
