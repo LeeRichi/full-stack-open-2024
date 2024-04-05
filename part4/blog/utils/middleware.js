@@ -15,7 +15,7 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message)
 
-  console.log('name: ' + error.name)
+  // console.log('name: ' + error.toString())
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
@@ -39,7 +39,7 @@ const tokenExtractor = (request, response, next) => {
     request.token = null;
   }
 
-  next();
+  return next();
 }
 
 module.exports = {

@@ -1,15 +1,15 @@
 
-POST http://localhost:3001/api/blogs/blog
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvZyBkdWR1MiIsImlkIjoiNjYwZmZjMDUxODYwM2JlNmVmNWNkNTM4IiwiaWF0IjoxNzEyMzIzODg1fQ.DG4dHmmk4JnlQoNuTIYEDix-v3qzFOf-u2xHQT08Qmk
+# POST http://localhost:3001/api/blogs/blog
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpY2ggbGVlIiwiaWQiOiI2NjBkNTdiOTI5YTM0NTc5MzNmYTQ5MzQiLCJpYXQiOjE3MTIzNDgyNzZ9.IFKa0kTRimb01x6zD24QvvT3sMr0RSRIqBiwDiDfV6s
 
-{
-    "title": "rich is a dog5",
-    "author": "78",
-    "url": "78",
-    "likes": 78,
-    "user": "660d57b929a3457933fa4934"
-}
+# {
+#     "title": "test for rich",
+#     "author": "78",
+#     "url": "78",
+#     "likes": 78,
+#     "user": "660d57b929a3457933fa4934"
+# }
 
 # DELETE  http://localhost:3001/api/blogs/6608673e391331305abca878
 
@@ -39,6 +39,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvZ
 # Content-Type: application/json
 
 # {
-#     "username": "dog dudu2",
+#     "username": "rich lee",
 #     "password": "password1234"
 # }
+
+
+DELETE http://localhost:3001/api/blogs/66106703a449e884510f0c68
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJpY2ggbGVlIiwiaWQiOiI2NjBkNTdiOTI5YTM0NTc5MzNmYTQ5MzQiLCJpYXQiOjE3MTIzNDgyNzZ9.IFKa0kTRimb01x6zD24QvvT3sMr0RSRIqBiwDiDfV6s
+
