@@ -1,16 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
 const middleware = require('../utils/middleware')
-const jwt = require('jsonwebtoken')
-
-// const getTokenFrom = request => {
-//   const authorization = request.get('authorization')
-//   if (authorization && authorization.startsWith('Bearer ')) {
-//     return authorization.replace('Bearer ', '')
-//   }
-//   return null
-// }
 
 blogsRouter.get('/', async(request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -33,15 +23,7 @@ blogsRouter.get('/:id', (request, response, next) =>
 
 blogsRouter.post('/blog', middleware.userExtractor, async(request, response, next) => {
   const body = request.body
-  // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  // const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: 'token invalid' })
-  // }
-
   const user = await request.user
-  console.log(user)
 
   const blog = new Blog({
     title: body.title,
@@ -60,21 +42,10 @@ blogsRouter.post('/blog', middleware.userExtractor, async(request, response, nex
 
 blogsRouter.delete('/:id', middleware.userExtractor, async(request, response, next) =>
 {
-  const user = await Blog.findById(request.params.id)
-
-  // const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: 'token invalid' })
-  // }
-
-  if (JSON.stringify(user.user) === JSON.stringify(request.user))
+  const blog = await Blog.findById(request.params.id)
+  const userId = blog.user
+  if (userId.toString() === request.user.id.toString())
   {
-    // Blog.findByIdAndDelete(request.params.id)
-    // .then(() => {
-    //   response.status(204).end()
-    // })
-    // .catch(error => next(error))
     await Blog.findByIdAndDelete(request.params.id);
     return response.status(204).end();
   } else
