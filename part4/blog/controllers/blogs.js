@@ -1,7 +1,7 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-
+const middleware = require('../utils/middleware')
 const jwt = require('jsonwebtoken')
 
 // const getTokenFrom = request => {
@@ -31,16 +31,17 @@ blogsRouter.get('/:id', (request, response, next) =>
     .catch(error => next(error))
 })
 
-blogsRouter.post('/blog', async(request, response, next) => {
+blogsRouter.post('/blog', middleware.userExtractor, async(request, response, next) => {
   const body = request.body
   // const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  // const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
+  // if (!decodedToken.id) {
+  //   return response.status(401).json({ error: 'token invalid' })
+  // }
 
-  const user = await User.findById(decodedToken.id)
+  const user = await request.user
+  console.log(user)
 
   const blog = new Blog({
     title: body.title,
@@ -55,25 +56,19 @@ blogsRouter.post('/blog', async(request, response, next) => {
   await user.save()
 
   response.status(201).json(savedBlog)
-
-  // blog.save()
-  //   .then(savedBlog => {
-  //     response.json(savedBlog)
-  //   })
-  //   .catch(error => next(error))
 })
 
-blogsRouter.delete('/:id', async(request, response, next) =>
+blogsRouter.delete('/:id', middleware.userExtractor, async(request, response, next) =>
 {
   const user = await Blog.findById(request.params.id)
 
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  // const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
+  // if (!decodedToken.id) {
+  //   return response.status(401).json({ error: 'token invalid' })
+  // }
 
-  if (JSON.stringify(user.user) === JSON.stringify(decodedToken.id))
+  if (JSON.stringify(user.user) === JSON.stringify(request.user))
   {
     // Blog.findByIdAndDelete(request.params.id)
     // .then(() => {
@@ -86,8 +81,6 @@ blogsRouter.delete('/:id', async(request, response, next) =>
   {
     return response.status(403).json({ error: 'unauthorized' });
   }
-
-  next();
 })
 
 blogsRouter.put('/:id', (request, response, next) => {
