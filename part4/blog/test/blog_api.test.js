@@ -9,6 +9,18 @@ const api = supertest(app)
 
 const helper = require('../utils/list_helper')
 
+const axios = require('axios');
+
+async function getToken(username, password) {
+  try {
+    const response = await axios.post('http://localhost:3001/api/login', { username, password });
+    return response.data.token;
+  } catch (error) {
+    console.error('Error while logging in:', error.message);
+    return null;
+  }
+}
+
 const initialBlogs = [
   {
     title: 'HTML is easy',
@@ -53,27 +65,32 @@ beforeEach(async () => {
 //   assert.strictEqual(allBlogsHaveId, true);
 // })
 
-// test('Total amount of blog increases by 1 while every post', async() =>
-// {
-//   const newBlog = {
-//     title: 'HTML is a dog',
-//     author: 'dog',
-//     url: 'www.yahoo.com',
-//     likes: 20
-//   }
-//   await api
-//     .post('/api/blogs/blog')
-//     .send(newBlog)
-//     .expect(200)
-//     .expect('Content-Type', /application\/json/)
+
+test('Total amount of blog increases by 1 while every post', async() =>
+{
+  const newBlog = {
+    title: 'HTML is a dog',
+    author: 'dog',
+    url: 'www.yahoo.com',
+    likes: 20
+  }
+
+  const token = await getToken();
+
+  await api
+    .post('/api/blogs/blog')
+    .set('Authorization', `Bearer ${token}`)
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
   
-//     const response = await api.get('/api/blogs')
-//     const titles = response.body.map(r => r.title)
+    const response = await api.get('/api/blogs')
+    const titles = response.body.map(r => r.title)
 
-//     assert.strictEqual(response.body.length, initialBlogs.length + 1)
+    assert.strictEqual(response.body.length, initialBlogs.length + 1)
 
-//     assert(titles.includes('HTML is a dog'))
-// })
+    assert(titles.includes('HTML is a dog'))
+})
 
 // test('if like is missing, default to 1', async() =>
 // {
@@ -120,46 +137,46 @@ beforeEach(async () => {
 //   })
 // })
 
-describe('updating of a note', () =>
-{
-  test('updating', async () =>
-  {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToUpdate = blogsAtStart[0]
+// describe('updating of a note', () =>
+// {
+//   test('updating', async () =>
+//   {
+//     const blogsAtStart = await helper.blogsInDb()
+//     const blogToUpdate = blogsAtStart[0]
 
-    const newBlog = {
-      title: 'new one',
-      author: 'rich',
-      url: 'www.url.com',
-      likes: 3
-    }
+//     const newBlog = {
+//       title: 'new one',
+//       author: 'rich',
+//       url: 'www.url.com',
+//       likes: 3
+//     }
 
-    // await api
-    //   .get(`/api/blogs/${blogToUpdate.id}`)
-    //   .expect(200)
-    //   .then(res => console.log(res.body))
+//     // await api
+//     //   .get(`/api/blogs/${blogToUpdate.id}`)
+//     //   .expect(200)
+//     //   .then(res => console.log(res.body))
 
-    await api
-      .put(`/api/blogs/${blogToUpdate.id}`)
-      .send(newBlog)
-      .expect(200)
-      .then(async res =>
-      {
-        console.log('arr:' + JSON.stringify(res.body))
-        const blogsAtEnd = await helper.blogsInDb()
-        console.log('blogsAtEnd[0]: ' + JSON.stringify(blogsAtEnd[0]))
-      })
+//     await api
+//       .put(`/api/blogs/${blogToUpdate.id}`)
+//       .send(newBlog)
+//       .expect(200)
+//       .then(async res =>
+//       {
+//         console.log('arr:' + JSON.stringify(res.body))
+//         const blogsAtEnd = await helper.blogsInDb()
+//         console.log('blogsAtEnd[0]: ' + JSON.stringify(blogsAtEnd[0]))
+//       })
 
-    // const blogsAtEnd = await helper.blogsInDb()
+//     // const blogsAtEnd = await helper.blogsInDb()
 
-    // console.log(blogsAtEnd[0])
+//     // console.log(blogsAtEnd[0])
 
-    // const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
-    // console.log(updatedBlog.title)
+//     // const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+//     // console.log(updatedBlog.title)
 
-    // assert.deepStrictEqual(blogsAtEnd[0], newBlog)
-  })
-})
+//     // assert.deepStrictEqual(blogsAtEnd[0], newBlog)
+//   })
+// })
 
 // test('the first blog is about something', async () => {
 //   const response = await api.get('/api/blogs')
