@@ -57,9 +57,14 @@ const App = () => {
           <Togglable buttonLabel="new blog" buttonCancel="cancel">
             <BlogForm setErrorMessage={handleErrorMessage} />
           </Togglable >
-          {blogs.map(blog =>
+          {/* {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
-          )}
+          )} */}
+          {blogs
+            .slice() // Create a copy of the array to avoid mutating the original
+            .sort((a, b) => b.likes - a.likes) // Sort the array based on the number of likes in descending order
+            .map(blog => <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />)
+          }
         </>
       }
     </div>
