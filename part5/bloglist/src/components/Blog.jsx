@@ -2,13 +2,14 @@ import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import { useState } from 'react'
 
-const Blog = ({ blog, blogs, setBlogs }) =>
+const Blog = ({ blog, blogs, setBlogs, updateBlog }) =>
 {
   const [likes, setLikes] = useState(blog.likes)
 
   const onLike = async () => {
     try
     {
+      updateBlog()
       setLikes(likes + 1)
       const newObj = {
         'title': blog.title,
