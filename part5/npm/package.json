@@ -1,0 +1,22 @@
+{
+  "name": "npm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.43.0",
+    "@types/node": "^20.12.6"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "mongoose": "^8.3.1",
+    "supertest": "^6.3.4"
+  }
+}
