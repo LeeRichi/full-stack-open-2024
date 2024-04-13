@@ -18,7 +18,6 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message)
 
-  // console.log('name: ' + error.toString())
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
@@ -49,10 +48,14 @@ const userExtractor = async (request, response, next) => {
   // Extract the user ID from the decoded token
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
+  console.log('decodedToken: ' + decodedToken.id )
+
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
   request.user = await User.findById(decodedToken.id)
+
+  console.log('request.user: ' + request.user)
   
   next();
 };
