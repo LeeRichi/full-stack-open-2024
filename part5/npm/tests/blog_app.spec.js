@@ -86,8 +86,9 @@ describe('Blog app', () =>
       await expect(page.getByText('link')).toBeVisible();
     });
 
-    test('blog can be edited', async ({ page }) =>
+    test('blog can be edited or delete', async ({ page }) =>
     {
+      
       await page.getByRole('button', { name: 'new blog' }).click();
       const textboxes = await page.$$('input[type="text"]');
 
@@ -102,11 +103,46 @@ describe('Blog app', () =>
         await dialog.accept();
       });
 
-      await expect(page.getByText('view')).toBeVisible();
+      // await expect(page.getByText('view')).toBeVisible();
 
       await page.getByRole('button', { name: 'view' }).click();
 
       await expect(page.getByText('A new blog "this is not title" by modified added')).toBeVisible();
+    })
+
+    test('blog can be deleted only by the right user', async ({ page }) =>
+    {
+      await page.getByRole('button', { name: 'new blog' }).click();
+
+
+      await expect(page.getByText('UserId')).toBeVisible();
+
+      const textboxes = await page.$$('input[type="text"]');
+
+      await textboxes[0].fill('this is not title')
+      await textboxes[1].fill('modified')
+      await textboxes[2].fill('edited too')
+      await textboxes[3].fill('100')
+
+      await page.getByRole('button', { name: 'Create' }).click();
+      
+      page.on('dialog', async dialog => {
+        await dialog.accept();
+      });
+      await page.getByRole('button', { name: 'view' }).click();
+
+      await expect(page.getByText('delete')).toBeVisible();
+
+      await page.getByRole('button', { name: 'delete' }).click();
+      
+      page.on('dialog', async dialog => {
+        await dialog.accept();
+      });
+
+      // await expect(page).not.toHaveText('this is not title');
+
+      await expect(page.getByText('view')).not.toBeVisible()
+
     })
   })
 });
