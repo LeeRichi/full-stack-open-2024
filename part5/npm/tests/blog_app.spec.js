@@ -13,6 +13,14 @@ describe('Blog app', () =>
       }
     })
 
+    await request.post('http://localhost:3001/api/users/user', {
+      data: {
+        name: 'Different User',
+        username: 'differentuser',
+        password: 'password'
+      }
+    });
+
     await page.goto('http://localhost:5173')
   })
 
@@ -142,7 +150,55 @@ describe('Blog app', () =>
       // await expect(page).not.toHaveText('this is not title');
 
       await expect(page.getByText('view')).not.toBeVisible()
+    })
 
+    async function login(page, username, password) {
+      // Perform login actions here
+      // For example:
+      await page.getByRole('textbox').first().fill(username)
+      await page.getByRole('textbox').last().fill(password)
+
+      // await page.getByRole('button', { name: 'Login' }).click()
+
+      // await expect(page.getByText('blogs')).toBeVisible()
+
+      const loginButton = await page.getByRole('button', { name: 'Login' });
+      await loginButton.click();
+
+      await expect(page.getByText('blogs')).toBeVisible()
+    }
+
+    async function createBlogPost(page, title, author, url, likes) {
+      // Perform actions to create a blog post here
+      // For example:
+      // await expect(page.getByText('new blog')).toBeVisible()
+
+      await page.getByRole('button', { name: 'new blog' }).click()
+
+      const textboxes = await page.$$('input[type="text"]');
+
+      await textboxes[0].fill('external function')
+      await textboxes[1].fill('new')
+      await textboxes[2].fill('also new')
+      await textboxes[3].fill('50')
+      await page.getByRole('button', { name: 'Create' }).click()
+    }
+
+    test('only the matched login user can see the delete btn', async ({ page }) =>
+    {      
+      await login(page, 'mluukkai', 'salainen')
+      await createBlogPost(page, 'Test Blog', 'Test Author', 'http://test.com', 10)
+      await expect(page.getByText('view')).toBeVisible()
+      await page.getByRole('button', { name: 'view' }).click()
+      await expect(page.getByText('delete')).toBeVisible()
+      await page.getByRole('button', { name: 'delete' }).click()
+
+      await page.getByRole('button', { name: 'log out' }).click();
+      await expect(page.getByText('log in to application')).toBeVisible()
+
+      await login(page, 'differentuser', 'password')
+      await page.getByRole('button', { name: 'view' }).click()
+      await expect(page.getByText('delete')).not.toBeVisible()
     })
   })
 });
